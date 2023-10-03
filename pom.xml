@@ -152,6 +152,10 @@
     </dependencies>
   </dependencyManagement>
 
+ <scm>
+    <developerConnection>scm:git:https://github.com/mdczw/spring-petclinic</developerConnection>
+  </scm>
+
   <build>
     <plugins>
       <plugin>
@@ -274,6 +278,12 @@
           <failOnNoGitDirectory>false</failOnNoGitDirectory>
           <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>3.0.1</version>
       </plugin>
 
     </plugins>
