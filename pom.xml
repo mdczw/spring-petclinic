@@ -32,7 +32,6 @@
     <maven-checkstyle.version>3.2.2</maven-checkstyle.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
     <spring-format.version>0.0.39</spring-format.version>
-
   </properties>
 
   <dependencies>
@@ -137,7 +136,6 @@
       <groupId>jakarta.xml.bind</groupId>
       <artifactId>jakarta.xml.bind-api</artifactId>
     </dependency>
-
   </dependencies>
 
   <dependencyManagement>
@@ -152,7 +150,7 @@
     </dependencies>
   </dependencyManagement>
 
- <scm>
+  <scm>
     <developerConnection>scm:git:https://github.com/mdczw/spring-petclinic</developerConnection>
     <tag>HEAD</tag>
   </scm>
@@ -287,6 +285,11 @@
         <version>3.0.1</version>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+      </plugin>
+
     </plugins>
   </build>
 
@@ -315,6 +318,17 @@
       </snapshots>
     </repository>
   </repositories>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>nexus-snapshots</id>
+      <url>http://localhost:8084/repository/maven-snapshots/</url>
+    </snapshotRepository>
+    <repository>
+      <id>nexus-releases</id>
+      <url>http://localhost:8084/repository/maven-releases/</url>
+    </repository>
+  </distributionManagement>
 
   <pluginRepositories>
     <pluginRepository>
