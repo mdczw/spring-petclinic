@@ -14,16 +14,16 @@ group = 'org.springframework.samples'
 version = scmVersion.version
 sourceCompatibility = '17'
 
-/*repositories {
-  mavenCentral()
-} */
-
 repositories {
+  mavenCentral()
+} 
+
+/*repositories {
   maven {
     url "http://localhost:8084/repository/maven-central/"
     allowInsecureProtocol = true
   }
-}
+}*/
 
 ext.webjarsFontawesomeVersion = "4.7.0"
 ext.webjarsBootstrapVersion = "5.2.3"
