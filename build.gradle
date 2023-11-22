@@ -6,6 +6,7 @@ plugins {
   id 'pl.allegro.tech.build.axion-release' version '1.15.1'
   id 'maven-publish'
 
+
 }
 
 apply plugin: 'java'
@@ -57,8 +58,8 @@ publishing {
       allowInsecureProtocol = true
       url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
       credentials {
-        username = 'admin'
-        password = 'sXPw@gihh4nAYr8'
+        username = project.findProperty("mavenUser")
+        password = project.findProperty("mavenPassword")
       }
     }
   }
@@ -80,4 +81,3 @@ task openTestResults() {
     java.awt.Desktop.getDesktop().browse(new File(reportFile).toURI())
   }
 }
-
