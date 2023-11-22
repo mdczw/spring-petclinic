@@ -18,13 +18,6 @@ repositories {
   mavenCentral()
 } 
 
-/*repositories {
-  maven {
-    url "http://localhost:8084/repository/maven-central/"
-    allowInsecureProtocol = true
-  }
-}*/
-
 ext.webjarsFontawesomeVersion = "4.7.0"
 ext.webjarsBootstrapVersion = "5.2.3"
 
@@ -54,7 +47,7 @@ dependencies {
 publishing {
   publications {
     mavenJava(MavenPublication) {
-            from components.java
+      artifact "build/libs/best-spring-petclinic-${version}.jar"
     }
   }
   repositories {
