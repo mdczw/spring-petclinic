@@ -4,7 +4,7 @@ services:
 
   spring-petclinic:
     build: .
-    command: ["java","-jar", "-Dspring.profiles.active=mysql","/app.jar"]
+    command: ["java","-jar","-Dspring.profiles.active=mysql","/app.jar"]
     ports:
       - "8080:8080"
     environment:
@@ -13,6 +13,9 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+    container_name: spring-petclinic
+    profiles: 
+      - prod
 
   mysql:
     image: mysql:8.0
@@ -29,3 +32,19 @@ services:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
+    container_name: mysql
+    profiles:
+      - mysql
+      - prod
+
+  postgres:
+    image: postgres:15.3
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=petclinic
+      - POSTGRES_USER=petclinic
+      - POSTGRES_DB=petclinic
+    profiles:
+      - postgres
+
