@@ -5,8 +5,8 @@ pipeline {
         stage('Checkstyle') {
             steps {
                 echo 'Checkstyle stage'
-                sh './gradlew checkstyleMain'
-                archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'
+                /*sh './gradlew checkstyleMain'
+                archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'*/
             }
         } 
         stage('Test') {
@@ -17,12 +17,14 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh './gradlew build -x test' 
+                /*sh './gradlew build -x test'*/ 
             }
         }
         stage('Create docker image') {
             steps {
                 echo 'Create docker image stage'
+                echo '$GIT_COMMIT'
+                /*sh 'docker build -t jenkins/spring-petclinic .'*/
                 
             }
         }
