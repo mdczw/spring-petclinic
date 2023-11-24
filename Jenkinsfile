@@ -29,6 +29,5 @@ pipeline {
                     /*sh 'docker build -t jenkins/spring-petclinic .'*/
                 }
             }
-        }
     }
 }
