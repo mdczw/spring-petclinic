@@ -6,6 +6,7 @@ pipeline {
             steps {
                 checkout scm
             }
+        }
         stage('Checkstyle') {
             steps {
                 echo 'Checkstyle stage'
