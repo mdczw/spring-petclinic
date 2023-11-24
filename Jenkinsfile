@@ -7,6 +7,7 @@ pipeline {
                 echo 'Checkstyle stage'
                 sh './gradlew checkstyleMain'
                 sh 'ls -la'
+                sh 'pwd'
                 /*archiveArtifacts artifacts: 'reports/main.html'*/
             }
         } 
