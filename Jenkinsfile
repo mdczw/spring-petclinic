@@ -8,7 +8,7 @@ pipeline {
                 sh './gradlew checkstyleMain'
                 sh 'ls -la'
                 sh 'pwd'
-                archiveArtifacts artifacts: 'build/reports/main.html'
+                archiveArtifacts artifacts: 'build/reports/checkstyle/main.html'
             }
         } 
         stage('Test') {
