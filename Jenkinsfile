@@ -22,6 +22,12 @@ pipeline {
             }
         }   
         stage('Create docker image') {
+            node {
+                echo 'Pulling...' + env.BRANCH_NAME
+                checkout scm
+        
+            }
+
             steps {
                 script {
                     echo 'Create docker image stage'
