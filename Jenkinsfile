@@ -2,6 +2,10 @@ pipeline {
     agent any
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
         stage('Checkstyle') {
             steps {
                 echo 'Checkstyle stage'
