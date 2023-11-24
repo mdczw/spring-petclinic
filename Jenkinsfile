@@ -6,7 +6,7 @@ pipeline {
             steps {
                 echo 'Checkstyle stage'
                 sh './gradlew checkstyleMain'
-                archiveArtifacts artifacts: 'build/reports/checkstyle/main.html'
+                archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'
             }
         } 
         stage('Test') {
