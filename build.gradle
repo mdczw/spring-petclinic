@@ -5,8 +5,7 @@ plugins {
   id 'org.graalvm.buildtools.native' version '0.9.23'
   id 'pl.allegro.tech.build.axion-release' version '1.15.1'
   id 'maven-publish'
-
-
+  id 'checkstyle'
 }
 
 apply plugin: 'java'
@@ -14,6 +13,10 @@ apply plugin: 'java'
 group = 'org.springframework.samples'
 version = scmVersion.version
 sourceCompatibility = '17'
+
+checkstyle {
+    toolVersion = '10.3.3'
+}
 
 repositories {
   mavenCentral()
