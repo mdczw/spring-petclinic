@@ -1,6 +1,6 @@
 pipeline {
     agent any
-
+    def commitHash = checkout(scm).GIT_COMMIT
         stage('Checkstyle') {
             steps {
                 echo 'Checkstyle stage'
