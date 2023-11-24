@@ -20,15 +20,7 @@ pipeline {
                 echo 'Build stage'
                 /*sh './gradlew build -x test'*/ 
             }
-        }
-        stage("stage-1") {
-            steps {
-                scmVars = git branch: env.BRANCH_NAME, credentialsId: 'github_key', url: 'https://github.com/mdczw/spring-petclinic'
-                commitHash = scmVars.GIT_COMMIT
-    
-            }
-        }
-            
+        }   
         stage('Create docker image') {
             steps {
                 script {
