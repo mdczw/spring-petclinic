@@ -22,10 +22,9 @@ pipeline {
             }
         }
         stage("stage-1") {
-        scmVars = git branch: env.BRANCH_NAME, credentialsId: 'github_key', url: 'https://github.com/mdczw/spring-petclinic'
-
-        commitHash = scmVars.GIT_COMMIT
-    }
+            scmVars = git branch: env.BRANCH_NAME, credentialsId: 'github_key', url: 'https://github.com/mdczw/spring-petclinic'
+            commitHash = scmVars.GIT_COMMIT
+        }
         stage('Create docker image') {
             steps {
                 script {
