@@ -5,7 +5,7 @@ pipeline {
         stage('Checkstyle') {
             steps {
                 echo 'Checkstyle stage'
-                './gradlew check'
+                sh './gradlew check'
                 /* sh archiveArtifacts artifacts: 'build/reports/main.html'*/
             }
         } 
