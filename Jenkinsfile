@@ -17,7 +17,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh './gradlew build -x test --no-daemon' 
+                sh './gradlew build -x test' 
             }
         }
         stage('Create docker image') {
