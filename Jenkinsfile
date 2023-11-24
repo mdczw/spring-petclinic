@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     echo 'Create docker image stage'
-                    echo '$branch'
+                    echo '$${env.BUILD_NUMBER}'
                     /*sh 'docker build -t jenkins/spring-petclinic .'*/
                 }
             }
