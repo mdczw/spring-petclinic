@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
                     echo 'Create docker image stage'
-                    def commitHash = env.GIT_COMMIT
+                    commitHash = env.GIT_COMMIT
                     echo '$commitHash'
                     /*sh 'docker build -t jenkins/spring-petclinic .'*/
                 }
