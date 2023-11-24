@@ -21,18 +21,11 @@ pipeline {
                 /*sh './gradlew build -x test'*/ 
             }
         }   
-        stage('Create docker image') {
-            node {
-                echo 'Pulling...' + env.BRANCH_NAME
-                checkout scm
-        
-            }
-
+        stage('Create docker image') 
             steps {
                 script {
                     echo 'Create docker image stage'
-                    commitHash = env.GIT_COMMIT
-                    echo '$commitHash'
+                    echo '$branch'
                     /*sh 'docker build -t jenkins/spring-petclinic .'*/
                 }
             }
