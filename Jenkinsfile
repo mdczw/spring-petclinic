@@ -21,7 +21,7 @@ pipeline {
                 /*sh './gradlew build -x test'*/ 
             }
         }   
-        stage('Create docker image') 
+        stage('Create docker image') {
             steps {
                 script {
                     echo 'Create docker image stage'
@@ -29,5 +29,6 @@ pipeline {
                     /*sh 'docker build -t jenkins/spring-petclinic .'*/
                 }
             }
+        }
     }
 }
