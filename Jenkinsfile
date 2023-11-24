@@ -24,7 +24,7 @@ pipeline {
         stage('Create docker image') {
             steps {
                 echo 'Create docker image stage'
-                echo '$GIT_COMMIT'
+                echo '$commitHash'
                 /*sh 'docker build -t jenkins/spring-petclinic .'*/
                 
             }
