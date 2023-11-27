@@ -16,8 +16,11 @@ sourceCompatibility = '17'
 
 checkstyle {
     toolVersion = '10.3.3'
-    checkstyle.enabled = false
 }
+check {
+    enabled = gradle.startParameter.taskNames.contains('check')
+}
+
 
 repositories {
   mavenCentral()
