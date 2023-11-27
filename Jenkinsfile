@@ -10,7 +10,7 @@ pipeline {
     stages {  
         stage('Checkstyle') {
             steps {
-                echo '${gitCommit}'
+                sh "echo ${gitCommit}"
                 echo 'Checkstyle stage $label'
                 /*sh './gradlew clean checkstyleMain'
                 archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'*/
