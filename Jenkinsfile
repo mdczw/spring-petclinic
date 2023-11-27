@@ -24,8 +24,6 @@ pipeline {
             steps {
                 script {
                     echo 'Create docker image stage'
-                    sh "echo ${GIT_COMMIT[0..6]}"
-                    
                     docker.build("modul13/spring_petclinic")   
                     NEXUS_DOCKER_REPO = 'http://localhost:8084'
                     withCredentials([usernamePassword(credentialsId: 'nexus_admin_login', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
