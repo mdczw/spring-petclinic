@@ -34,7 +34,9 @@ pipeline {
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_key') {
                         app.push("${GIT_COMMIT[0..6]}")
                     }
+                }
             }
         }
     }
 }
+    
