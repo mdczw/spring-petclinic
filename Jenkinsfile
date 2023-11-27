@@ -2,12 +2,12 @@ pipeline {
     agent any /*{
         docker { image 'node:16-alpine'}
     }*/
-    
+    def label = "${BUILD_TAG}"
     stages {  
         stage('Checkstyle') {
             steps {
                 echo 'Checkstyle stage'
-                /*sh './gradlew checkstyleMain'
+                /*sh './gradlew clean checkstyleMain'
                 archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'*/
             }
         } 
@@ -27,8 +27,12 @@ pipeline {
             steps {
                 script {
                     echo 'Create docker image stage'
-                    echo '${env.BUILD_NUMBER}'
-                    /*sh 'docker build -t jenkins/spring-petclinic .'*/
+                    /*app = docker.build("willbla/train-schedule")
+                    app.inside {
+                        sh 'echo $(curl localhost:8080)'
+                    }
+
+                    sh 'docker build -t jenkins/spring-petclinic .'*/
                 }
             }
         }
