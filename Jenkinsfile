@@ -3,13 +3,15 @@ pipeline {
         docker { image 'node:16-alpine'}
     }*/
     environment {
-        shortGitCommit = "${gitCommit[0..10]}"
+        myRepo = checkout scm
+        gitCommit = myRepo.GIT_COMMIT
+
     }
 
     stages {  
         stage('Checkstyle') {
             steps {
-                echo '${env.shortGitCommit}'
+                echo '${gitCommit}'
                 echo 'Checkstyle stage $label'
                 /*sh './gradlew clean checkstyleMain'
                 archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'*/
