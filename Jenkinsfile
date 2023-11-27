@@ -3,8 +3,7 @@ pipeline {
         docker { image 'node:16-alpine'}
     }*/
     environment {
-        myRepo = checkout scm
-        gitCommit = myRepo.GIT_COMMIT
+        gitCommit = "${GIT_COMMIT}"
 
     }
 
