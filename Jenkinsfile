@@ -8,7 +8,7 @@ pipeline {
     stages {  
         stage('Checkstyle') {
             steps {
-                echo 'Checkstyle stage'
+                echo 'Checkstyle stage $label'
                 /*sh './gradlew clean checkstyleMain'
                 archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'*/
             }
