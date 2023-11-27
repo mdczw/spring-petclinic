@@ -29,7 +29,6 @@ pipeline {
                     docker.build("modul13/spring_petclinic")   
                     NEXUS_DOCKER_REPO = 'http://localhost:8084'
                     withCredentials([usernamePassword(credentialsId: 'nexus_admin_login', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
-                        sh ' echo $NEXUS_PASSWORD $NEXUS_USERNAME'
                         sh ' echo $NEXUS_PASSWORD | docker login -u $NEXUS_USERNAME --password-stdin http://localhost:8084/repository/mr'
                         sh "docker push http://localhost:8084/repository/mr/spring-petclinic:${GIT_COMMIT[0..6]}"
                     }
