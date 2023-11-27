@@ -1,8 +1,5 @@
 pipeline {
     agent any 
-    /*{
-        docker { image 'node:16-alpine'}
-    }*/
     stages {  
         stage('Checkstyle') {
             steps {
@@ -28,17 +25,20 @@ pipeline {
                 script {
                     echo 'Create docker image stage'
                     sh "echo ${GIT_COMMIT[0..6]}"
-                    app = docker.build("modul13/spring_petclinic")
-                    app.inside {
-                        sh 'echo $(curl localhost:8080)'
+                    docker.build("modul13/spring_petclinic")   
+                    NEXUS_DOCKER_REPO = 'http://localhost:8084'
+                    withCredentials([usernamePassword(credentialsId: 'nexus_admin_login', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
+                        sh "docker login -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD} ${NEXUS_DOCKER_REPO}"
+                        sh "docker push ${NEXUS_DOCKER_REPO}/repository/mr/spring-petclinic:${GIT_COMMIT[0..6]}"
                     }
-                    NEXUS_DOCKER_REPO = 'http://localhost:8084/repository/mr/'
-                    withCredentials([usernamePassword(credentialsId: 'nexus_admin_login', usernameVariable: 'USER', passwordVariable: 'PASS' )]){
+
+                
+                   /* withCredentials([usernamePassword(credentialsId: 'nexus_admin_login', usernameVariable: 'USER', passwordVariable: 'PASS' )]){
                         sh ' echo $PASS | docker login -u $USER --password-stdin $NEXUS_DOCKER_REPO'
                         sh 'docker push $NEXUS_DOCKER_REPO/spring_petclinic:$GIT_COMMIT[0..6]'
 
                     }
-                    /*sh 'docker build -t jenkins/spring-petclinic .'*/
+                    'docker build -t jenkins/spring-petclinic .'*/
                 }
             }
         }
