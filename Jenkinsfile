@@ -2,8 +2,9 @@ pipeline {
     agent any /*{
         docker { image 'node:16-alpine'}
     }*/
-    def label = "${BUILD_TAG}"
+    
     stages {  
+        def label = "${BUILD_TAG}"
         stage('Checkstyle') {
             steps {
                 echo 'Checkstyle stage'
