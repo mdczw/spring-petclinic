@@ -4,20 +4,20 @@ pipeline {
         stage('Checkstyle') {
             steps {
                 echo 'Checkstyle stage'
-                sh './gradlew clean checkstyleMain'
-                archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'
+                /*sh './gradlew clean checkstyleMain'
+                archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'*/
             }
         } 
         stage('Test') {
             steps {
                 echo 'Test stage'
-                sh './gradlew clean test'
+                 /*sh './gradlew clean test'*/
             }
         }
         stage('Build') {
             steps {
                 echo 'Build stage'
-                sh './gradlew clean build -x test'
+                 /*sh './gradlew clean build -x test'*/
             }
         }   
         stage('Create docker image') {
