@@ -5,7 +5,7 @@ COPY gradle gradle
 COPY build.gradle .
 COPY settings.gradle .
 COPY src src
-RUN ./gradlew clean build -x test check
+RUN ./gradlew clean build -x test -x check
 
 FROM eclipse-temurin:17-jre-alpine
 VOLUME /tmp
