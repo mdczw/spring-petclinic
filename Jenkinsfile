@@ -24,17 +24,16 @@ pipeline {
             steps {
                 script {
                     echo 'Create docker image stage'
-                    app = docker.build("mdczw/mr")   
+                    app = docker.build("mdczw/mr")  
+                }
+            }
+        }
+        stage('Push to DockerHub') {
+            steps {
+                script {
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_key') {
                         app.push("${GIT_COMMIT[0..6]}")
                     }
-                
-                   /* withCredentials([usernamePassword(credentialsId: 'nexus_admin_login', usernameVariable: 'USER', passwordVariable: 'PASS' )]){
-                        sh ' echo $NEXUS_PASSWORD | docker login -u $NEXUS_USERNAME --password-stdin $NEXUS_DOCKER_REPO'
-                        sh 'docker push $NEXUS_DOCKER_REPO/spring_petclinic:$GIT_COMMIT[0..6]'
-                    }
-                    'docker build -t jenkins/spring-petclinic .'*/
-                }
             }
         }
     }
