@@ -3,7 +3,7 @@ pipeline {
         docker { image 'node:16-alpine'}
     }*/
     environment {
-        gitCommit = "12345"
+        gitCommit = "${GIT_COMMIT}"
 
     }
 
