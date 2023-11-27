@@ -32,11 +32,12 @@ pipeline {
                     app.inside {
                         sh 'echo $(curl localhost:8080)'
                     }
-                    docker.withRegistry('http://localhost:8084/repository/mr/', 'nexus_admin_login') {
-                        app.push("${GIT_COMMIT[0..6]}")
+                    NEXUS_DOCKER_REPO = 'http://localhost:8084/repository/mr/'
+                    withCredentials([usernamePassword(credentialsId: 'nexus_admin_login', usernameVariable: 'USER', passwordVariable: 'PASS' )]){
+                        sh ' echo $PASS | docker login -u $USER --password-stdin $NEXUS_DOCKER_REPO'
+                        sh 'docker push $NEXUS_DOCKER_REPO/spring_petclinic:$GIT_COMMIT[0..6]'
+
                     }
-
-
                     /*sh 'docker build -t jenkins/spring-petclinic .'*/
                 }
             }
