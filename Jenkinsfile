@@ -20,17 +20,25 @@ pipeline {
                  /*sh './gradlew clean build -x test'*/
             }
         }   
-        stage('Create docker image') {
-            steps {
-                script {
-                    echo 'Create docker image stage'
-                    app = docker.build("mdczw/mr")  
-                }
-            }
-        }
         stage('Push to DockerHub') {
             steps {
                 script {
+                    echo 'Push to DockerHub'
+                    app = docker.build("mdczw/mr") 
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_key') {
+                        app.push("${GIT_COMMIT[0..6]}")
+                    }
+                }
+            }
+        }    
+        stage('Push main') {
+            when {
+                branch 'main'
+            }
+            steps {
+                script {
+                    echo 'Push main'
+                    app = docker.build("mdczw/main") 
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_key') {
                         app.push("${GIT_COMMIT[0..6]}")
                     }
