@@ -1,13 +1,15 @@
-def label = "${BUILD_TAG}"
-
 pipeline {
     agent any /*{
         docker { image 'node:16-alpine'}
     }*/
-    
+    environment {
+        shortGitCommit = "${gitCommit[0..10]}"
+    }
+
     stages {  
         stage('Checkstyle') {
             steps {
+                echo '${env.shortGitCommit}'
                 echo 'Checkstyle stage $label'
                 /*sh './gradlew clean checkstyleMain'
                 archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'*/
