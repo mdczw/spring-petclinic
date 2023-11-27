@@ -3,7 +3,6 @@ pipeline {
     /*{
         docker { image 'node:16-alpine'}
     }*/
-    NEXUS_MR_REPO = "http://localhost:8084/repository/mr/"
     stages {  
         stage('Checkstyle') {
             steps {
