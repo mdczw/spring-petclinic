@@ -4,8 +4,8 @@ pipeline {
         stage('Checkstyle') {
             steps {
                 echo 'Checkstyle stage'
-                /*sh './gradlew clean checkstyleMain'
-                archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'*/
+                sh './gradlew clean checkstyleMain'
+                archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'
             }
         } 
         stage('Test') {
@@ -17,13 +17,16 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Build stage'
-                 /*sh './gradlew clean build -x test'*/
+                 sh './gradlew clean build -x test'
             }
         }   
-        stage('Push to DockerHub') {
+        stage('Push mr to DockerHub') {
+            when {
+                changeset 'origin/(pull/*)'
+            }
             steps {
                 script {
-                    echo 'Push to DockerHub'
+                    echo 'Push mr to DockerHub'
                     app = docker.build("mdczw/mr") 
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_key') {
                         app.push("${GIT_COMMIT[0..6]}")
@@ -31,13 +34,13 @@ pipeline {
                 }
             }
         }    
-        stage('Push main') {
+        stage('Push main to DockerHub') {
             when {
                 branch 'main'
             }
             steps {
                 script {
-                    echo 'Push main'
+                    echo 'Push main to DockerHub'
                     app = docker.build("mdczw/main") 
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_key') {
                         app.push("${GIT_COMMIT[0..6]}")
