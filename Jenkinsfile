@@ -22,7 +22,7 @@ pipeline {
         }   
         stage('Push mr to DockerHub') {
             when {
-                changeset 'origin/(pull/*)'
+                branch 'PR-*'
             }
             steps {
                 script {
