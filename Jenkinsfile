@@ -21,6 +21,9 @@ pipeline {
             }
         }   
         stage('Push mr to DockerHub') {
+            when {
+                changeset 'origin/(pull/*)'
+            }
             steps {
                 script {
                     echo 'Push mr to DockerHub'
