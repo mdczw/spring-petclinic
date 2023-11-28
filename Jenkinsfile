@@ -2,6 +2,9 @@ pipeline {
     agent { label 'linux'} 
     stages {  
         stage('Checkstyle') {
+            when {
+                branch 'PR-*'
+            }
             steps {
                 echo 'Checkstyle stage'
                 sh './gradlew clean checkstyleMain'
@@ -9,12 +12,18 @@ pipeline {
             }
         } 
         stage('Test') {
+            when {
+                branch 'PR-*'
+            }
             steps {
                 echo 'Test stage'
                  sh './gradlew clean test'
             }
         }
         stage('Build') {
+            when {
+                branch 'PR-*'
+            }
             steps {
                 echo 'Build stage'
                  sh './gradlew clean build -x test'
