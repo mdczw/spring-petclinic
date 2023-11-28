@@ -1,29 +1,50 @@
 pipeline {
-    agent any
-
-    stages {
+    agent { label 'linux'} 
+    stages {  
         stage('Checkstyle') {
             steps {
                 echo 'Checkstyle stage'
-               /* sh './gradlew check'
-                archiveArtifacts artifacts: 'build/reports/main.html'*/
+                /*sh './gradlew clean checkstyleMain'
+                archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'*/
             }
         } 
         stage('Test') {
             steps {
-                sh './gradlew test'
+                echo 'Test stage'
+                 sh './gradlew clean test'
             }
         }
         stage('Build') {
             steps {
-                sh './gradlew build -x test --no-daemon' 
+                echo 'Build stage'
+                 /*sh './gradlew clean build -x test'*/
             }
-        }
-        stage('Create docker image') {
+        }   
+        stage('Push to DockerHub') {
             steps {
-                echo 'Create docker image stage'
-                
+                script {
+                    echo 'Push to DockerHub'
+                    app = docker.build("mdczw/mr") 
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_key') {
+                        app.push("${GIT_COMMIT[0..6]}")
+                    }
+                }
+            }
+        }    
+        stage('Push main') {
+            when {
+                branch 'main'
+            }
+            steps {
+                script {
+                    echo 'Push main'
+                    app = docker.build("mdczw/main") 
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_key') {
+                        app.push("${GIT_COMMIT[0..6]}")
+                    }
+                }
             }
         }
     }
 }
+    
