@@ -4,8 +4,8 @@ pipeline {
         stage('Checkstyle') {
             steps {
                 echo 'Checkstyle stage'
-                /*sh './gradlew clean checkstyleMain'
-                archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'*/
+                sh './gradlew clean checkstyleMain'
+                archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'
             }
         } 
         stage('Test') {
@@ -17,7 +17,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Build stage'
-                 /*sh './gradlew clean build -x test'*/
+                 sh './gradlew clean build -x test'
             }
         }   
         stage('Push to DockerHub') {
