@@ -1,0 +1,83 @@
+variables: 
+  IMAGE_TAG: $CI_COMMIT_SHORT_SHA
+  JDK_IMAGE: eclipse-temurin:17-jdk-alpine
+  DOCKER_IMAGE: docker:24.0.7
+  DIND_IMAGE: docker:24.0.7-dind
+
+stages:
+  - checkstyle
+  - test
+  - build
+  - build_image
+
+checkstyle:
+  stage: checkstyle
+  only:
+    refs:
+      - merge_requests
+  image: $JDK_IMAGE
+  script:
+    - ./gradlew clean checkstyleMain
+  artifacts:
+    paths:
+      - build/reports/checkstyle/main.xml
+
+run_test:
+  stage: test
+  only:
+    refs:
+      - merge_requests
+  image: $JDK_IMAGE
+  services:
+  - name: $DIND_IMAGE
+    command: ["--tls=false"]
+  variables:
+    DOCKER_HOST: "tcp://docker:2375"
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+  script:
+    - ./gradlew clean test
+
+build_without_tests:
+  stage: build
+  only:
+    refs:
+      - merge_requests
+  image: $JDK_IMAGE
+  script:
+    - ./gradlew clean build -x test
+
+build_mr_image:
+  stage: build_image
+  only:
+    refs:
+      - merge_requests
+  image: $DOCKER_IMAGE
+  services:
+    - $DIND_IMAGE
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    IMAGE_NAME: mdczw/mr
+  before_script:
+    - echo $DOCKER_PASS | docker login --username $DOCKER_USER --password-stdin
+  script:
+    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+    - docker push $IMAGE_NAME:$IMAGE_TAG
+
+build_main_image:
+  stage: build_image
+  only:
+    refs:
+      - main
+  image: $DOCKER_IMAGE
+  services:
+    - $DIND_IMAGE
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    IMAGE_NAME: mdczw/main
+  before_script:
+    - echo $DOCKER_PASS | docker login --username $DOCKER_USER --password-stdin
+  script:
+    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+    - docker push $IMAGE_NAME:$IMAGE_TAG
+
