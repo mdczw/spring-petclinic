@@ -12,9 +12,8 @@ stages:
 
 checkstyle:
   stage: checkstyle
-  only:
-    refs:
-      - merge_requests
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   image: $JDK_IMAGE
   script:
     - ./gradlew clean checkstyleMain
@@ -24,9 +23,8 @@ checkstyle:
 
 run_test:
   stage: test
-  only:
-    refs:
-      - merge_requests
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   image: $JDK_IMAGE
   services:
   - name: $DIND_IMAGE
@@ -40,18 +38,16 @@ run_test:
 
 build_without_tests:
   stage: build
-  only:
-    refs:
-      - merge_requests
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   image: $JDK_IMAGE
   script:
     - ./gradlew clean build -x test
 
 build_mr_image:
   stage: build_image
-  only:
-    refs:
-      - merge_requests
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   image: $DOCKER_IMAGE
   services:
     - $DIND_IMAGE
@@ -66,9 +62,8 @@ build_mr_image:
 
 build_main_image:
   stage: build_image
-  only:
-    refs:
-      - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
   image: $DOCKER_IMAGE
   services:
     - $DIND_IMAGE
@@ -80,4 +75,3 @@ build_main_image:
   script:
     - docker build -t $IMAGE_NAME:$IMAGE_TAG .
     - docker push $IMAGE_NAME:$IMAGE_TAG
-
