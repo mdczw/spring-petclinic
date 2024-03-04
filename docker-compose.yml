@@ -15,7 +15,7 @@ services:
         condition: service_healthy
     container_name: spring-petclinic
     profiles: 
-      - prod
+      - app
 
   mysql:
     image: mysql:8.0
@@ -35,7 +35,7 @@ services:
     container_name: mysql
     profiles:
       - mysql
-      - prod
+      - app
 
   postgres:
     image: postgres:15.3
@@ -48,3 +48,26 @@ services:
     profiles:
       - postgres
 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    volumes:
+      - ./monitoring:/etc/prometheus
+    depends_on:
+      - spring-petclinic
+    profiles: 
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    profiles: 
+      - monitoring

@@ -22,11 +22,12 @@ scrape_configs:
     # metrics_path defaults to '/metrics'
     # scheme defaults to 'http'.
     static_configs:
-      - targets: ["localhost:9090"]
+      - targets: ["prometheus:9090"]
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+
   - job_name: spring-petclinic
       # metrics_path defaults to '/metrics'
       # scheme defaults to 'http'.
-
+    metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ["172.17.0.2:1234"]
+      - targets: ["spring-petclinic:8080"]
