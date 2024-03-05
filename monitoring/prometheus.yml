@@ -31,3 +31,9 @@ scrape_configs:
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: ["spring-petclinic:8080"]
+
+  - job_name: jmx-exporter
+      # metrics_path defaults to '/metrics'
+      # scheme defaults to 'http'.
+    static_configs:
+      - targets: ["spring-petclinic:1234"]

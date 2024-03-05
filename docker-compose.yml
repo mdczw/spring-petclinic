@@ -4,9 +4,10 @@ services:
 
   spring-petclinic:
     build: .
-    command: ["java","-jar","-Dspring.profiles.active=mysql","/app.jar"]
+    command: ["java","-javaagent:./monitoring/jmx_prometheus_javaagent-0.20.0.jar=1234:monitoring/config.yaml", "-jar","-Dspring.profiles.active=mysql","/app.jar"]
     ports:
       - "8080:8080"
+      - "1234:1234"
     environment:
       - MYSQL_URL=jdbc:mysql://mysql:3306/petclinic
       - MYSQL_PASS=petclinic
