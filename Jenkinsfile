@@ -8,7 +8,6 @@ pipeline {
             steps {
                 echo 'Checkstyle stage'
                 sh './gradlew clean checkstyleMain'
-                archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'
             }
         } 
         stage('Test') {
@@ -27,6 +26,8 @@ pipeline {
             steps {
                 echo 'Build stage'
                  sh './gradlew clean build -x test'
+                 archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+
             }
         }   
     }
