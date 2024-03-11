@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        COMMIT_HASH = ${GIT_REVISION,length=6}
+        COMMIT_HASH = GIT_COMMIT.take(7)
         ARTIFACT_NAME = "spring-petclinic-${COMMIT_HASH}.jar"
     }
 
