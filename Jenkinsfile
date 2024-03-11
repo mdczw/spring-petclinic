@@ -3,7 +3,7 @@ pipeline {
     stages {  
         stage('Checkstyle') {
             when {
-                branch 'PR-*'
+                branch 'test-1'
             }
             steps {
                 echo 'Checkstyle stage'
