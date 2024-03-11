@@ -35,11 +35,9 @@ pipeline {
             }
             steps {
                 echo 'Creating an artifact'
-                sh '''
-                    ARTIFACT_NAME="spring-petclinic-${GIT_COMMIT[0..6]}.jar"
-                    cp build/libs/*.jar "${ARTIFACT_NAME}"
-                '''
-                 archiveArtifacts artifacts: "${ARTIFACT_NAME}", fingerprint: true
+                ARTIFACT_NAME="spring-petclinic-${GIT_COMMIT[0..6]}.jar"
+                cp build/libs/*.jar "${ARTIFACT_NAME}"
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}", fingerprint: true
 
             }
         }   
