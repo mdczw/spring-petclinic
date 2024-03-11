@@ -36,7 +36,7 @@ pipeline {
                 echo 'Creating an artifact'
                 def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true)
                 def artefact_name="spring-petclinic-${commit_hash}.jar"
-                sh cp build/libs/*.jar build/libs/${artefact_name}
+                sh 'cp build/libs/*.jar build/libs/${artefact_name}'
                 archiveArtifacts artifacts: build/libs/${artefact_name}
             }
         }   
