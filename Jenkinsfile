@@ -8,7 +8,6 @@ pipeline {
             steps {
                 echo 'Checkstyle stage'
                 sh './gradlew clean checkstyleMain'
-                archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'
             }
         } 
         stage('Test') {
@@ -40,7 +39,7 @@ pipeline {
                     ARTIFACT_NAME="spring-petclinic-${COMMIT_HASH}.jar"
                     cp build/libs/*.jar build/libs/"${ARTIFACT_NAME}"
                 '''
-                archiveArtifacts artifacts: "build/libs/${ARTIFACT_NAME}"
+                archiveArtifacts artifacts: build/libs/${ARTIFACT_NAME}
             }
         }   
         stage('Pushing the artifact to Nexus') {
