@@ -44,7 +44,7 @@ pipeline {
                 echo 'Creating an artifact'
             }
         }   
-        stage('Pushing the artifact to Nexus') {
+        stage('the artifact to Nexus') {
             when {
                 branch 'test-1'
             }
