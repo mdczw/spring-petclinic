@@ -2,8 +2,8 @@ pipeline {
     agent any
     
     environment {
-        COMMIT_HASH = $(git rev-parse --short HEAD)
-        ARTIFACT_NAME="spring-petclinic-${COMMIT_HASH}.jar"
+        COMMIT_HASH = ${GIT_REVISION,length=6}
+        ARTIFACT_NAME = "spring-petclinic-${COMMIT_HASH}.jar"
     }
 
     stages {  
