@@ -37,7 +37,7 @@ pipeline {
                 sh '''
                     COMMIT_HASH=$(git rev-parse --short HEAD)
                     ARTIFACT_NAME="spring-petclinic-${COMMIT_HASH}.jar"
-                    cp build/libs/*.jar build/libs/"${ARTIFACT_NAME}"
+                    cp build/libs/*.jar build/libs/${ARTIFACT_NAME}
                 '''
                 archiveArtifacts artifacts: build/libs/${ARTIFACT_NAME}
             }
