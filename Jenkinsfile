@@ -26,8 +26,28 @@ pipeline {
             steps {
                 echo 'Build stage'
                  sh './gradlew clean build -x test'
-                 archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+            }
+        }  
+        stage('Creating an artifact') {
+            when {
+                branch 'test-1'
+            }
+            steps {
+                echo 'Creating an artifact'
+                sh '''
+                    ARTIFACT_NAME="spring-petclinic-${GIT_COMMIT[0..6]}.jar"
+                    cp build/libs/*.jar "${ARTIFACT_NAME}"
+                '''
+                 archiveArtifacts artifacts: "${ARTIFACT_NAME}", fingerprint: true
 
+            }
+        }   
+        stage('Pushing the artifact to Nexus') {
+            when {
+                branch 'test-1'
+            }
+            steps {
+                echo 'Pushing the artifact to Nexus'
             }
         }   
     }
