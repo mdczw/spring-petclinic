@@ -1,5 +1,11 @@
 pipeline {
     agent any
+    
+    environment {
+        COMMIT_HASH = $(git rev-parse --short HEAD)
+        ARTIFACT_NAME="spring-petclinic-${COMMIT_HASH}.jar"
+    }
+
     stages {  
         stage('Checkstyle') {
             when {
@@ -34,10 +40,8 @@ pipeline {
             }
             steps {
                 echo 'Creating an artifact'
-                def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true)
-                def artefact_name="spring-petclinic-${commit_hash}.jar"
-                sh 'cp build/libs/*.jar build/libs/${artefact_name}'
-                archiveArtifacts artifacts: build/libs/${artefact_name}
+                sh 'cp build/libs/*.jar build/libs/${ARTIFACT_NAME}'
+                archiveArtifacts artifacts: 'build/libs/env.ARTIFACT_NAME'
             }
         }   
         stage('Pushing the artifact to Nexus') {
