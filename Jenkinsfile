@@ -7,31 +7,33 @@ pipeline {
     }
 
     stages {  
-        stage('Checkstyle') {
+        stage('Git tag') {
             when {
                 branch 'test-1'
             }
             steps {
-                echo 'Checkstyle stage'
-                sh './gradlew clean checkstyleMain'
+                echo 'Creating git tag'
+                sh './gradlew release'
+                sh 'git tag'
             }
         } 
-        stage('Test') {
+        stage('Creating an artifact ') {
             when {
                 branch 'test-1'
             }
             steps {
-                echo 'Test stage'
-                 sh './gradlew clean test'
+                echo 'Creating an artifact'
+               // ARTIFACT_NAME = "spring-petclinic-${COMMIT_HASH}.jar"
+                //sh 'cp build/libs/*.jar build/libs/${ARTIFACT_NAME}'
+                //archiveArtifacts artifacts: "build/libs/${ARTIFACT_NAME}"
             }
         }
-        stage('Build') {
+        stage('Pushing the artifact to Nexus') {
             when {
                 branch 'test-1'
             }
             steps {
-                echo 'Build stage'
-                 sh './gradlew clean build -x test'
+                echo 'Pushing the artifact to Nexus'
             }
         }  
         stage('Creating an artifact') {
@@ -40,8 +42,6 @@ pipeline {
             }
             steps {
                 echo 'Creating an artifact'
-                sh 'cp build/libs/*.jar build/libs/${ARTIFACT_NAME}'
-                archiveArtifacts artifacts: "build/libs/${ARTIFACT_NAME}"
             }
         }   
         stage('Pushing the artifact to Nexus') {
