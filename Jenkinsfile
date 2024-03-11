@@ -1,13 +1,13 @@
 pipeline {
-    agent any
     stages {  
         stage('Checkstyle') {
             when {
-                branch 'test-1'
+                branch 'PR-*'
             }
             steps {
                 echo 'Checkstyle stage'
                 sh './gradlew clean checkstyleMain'
+                archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'
             }
         } 
         stage('Test') {
