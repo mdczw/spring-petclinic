@@ -41,8 +41,7 @@ pipeline {
             steps {
                 echo 'Creating an artifact'
                 sh 'cp build/libs/*.jar build/libs/${ARTIFACT_NAME}'
-                def artifactPath = "build/libs/${ARTIFACT_NAME}"
-                archiveArtifacts artifacts: artifactPath
+                archiveArtifacts artifacts: "build/libs/${ARTIFACT_NAME}"
             }
         }   
         stage('Pushing the artifact to Nexus') {
