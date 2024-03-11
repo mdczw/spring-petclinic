@@ -35,10 +35,12 @@ pipeline {
             }
             steps {
                 echo 'Creating an artifact'
-                ARTIFACT_NAME="spring-petclinic-${GIT_COMMIT[0..6]}.jar"
-                cp build/libs/*.jar "${ARTIFACT_NAME}"
-                archiveArtifacts artifacts: "${ARTIFACT_NAME}", fingerprint: true
-
+                sh '''
+                    COMMIT_HASH=$(git rev-parse --short HEAD)
+                    ARTIFACT_NAME="spring-petclinic-${COMMIT_HASH}.jar"
+                    cp build/libs/*.jar build/libs/"${ARTIFACT_NAME}"
+                '''
+                archiveArtifacts artifacts: "build/libs/${ARTIFACT_NAME}"
             }
         }   
         stage('Pushing the artifact to Nexus') {
