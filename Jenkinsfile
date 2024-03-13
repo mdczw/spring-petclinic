@@ -3,37 +3,35 @@ pipeline {
     
     environment {
         COMMIT_HASH = GIT_COMMIT.take(7)
-        ARTIFACT_NAME = "spring-petclinic-${COMMIT_HASH}.jar"
+        IMAGE_NAME = "spring-petclinic"
     }
 
     stages {  
-        stage('Git tag') {
+        stage('Checkstyle') {
             when {
                 branch 'test-1'
             }
             steps {
-                echo 'Creating git tag'
-                sh './gradlew release'
-                sh 'git tag'
+                echo 'Checkstyle stage'
+                sh './gradlew clean checkstyleMain'
             }
         } 
-        stage('Creating an artifact ') {
+        stage('Test') {
             when {
                 branch 'test-1'
             }
             steps {
-                echo 'Creating an artifact'
-               // ARTIFACT_NAME = "spring-petclinic-${COMMIT_HASH}.jar"
-                //sh 'cp build/libs/*.jar build/libs/${ARTIFACT_NAME}'
-                //archiveArtifacts artifacts: "build/libs/${ARTIFACT_NAME}"
+                echo 'Test stage'
+                 sh './gradlew clean test'
             }
         }
-        stage('Pushing the artifact to Nexus') {
+        stage('Build') {
             when {
                 branch 'test-1'
             }
             steps {
-                echo 'Pushing the artifact to Nexus'
+                echo 'Build stage'
+                 sh './gradlew clean build -x test'
             }
         }  
         stage('Creating an artifact') {
@@ -42,14 +40,19 @@ pipeline {
             }
             steps {
                 echo 'Creating an artifact'
+                docker.build("${IMAGE_NAME}:${COMMIT_HASH}")
             }
-        }   
-        stage('the artifact to Nexus') {
+        }  
+
+        stage('Pushing the artifact to Nexus') {
             when {
                 branch 'test-1'
             }
             steps {
                 echo 'Pushing the artifact to Nexus'
+                docker.withRegistry('http://localhost:8081/repository/dockerhosted-repo/', 'nexus') {
+                        app.push("${IMAGE_NAME}:${COMMIT_HASH}")
+                    }
             }
         }   
     }
