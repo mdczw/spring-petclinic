@@ -22,7 +22,7 @@ pipeline {
             }
             steps {
                 echo 'Test stage'
-                 sh './gradlew clean test'
+                sh './gradlew clean test'
             }
         }
         stage('Build') {
@@ -30,8 +30,9 @@ pipeline {
                 branch 'test-1'
             }
             steps {
+                
                 echo 'Build stage'
-                 sh './gradlew clean build -x test'
+                sh './gradlew clean build -x test'
             }
         }  
         stage('Creating an artifact') {
@@ -39,8 +40,10 @@ pipeline {
                 branch 'test-1'
             }
             steps {
-                echo 'Creating an artifact'
-                docker.build("${IMAGE_NAME}:${COMMIT_HASH}")
+                script {
+                    echo 'Creating an artifact'
+                    docker.build("${IMAGE_NAME}:${COMMIT_HASH}")
+                }
             }
         }  
 
@@ -49,10 +52,12 @@ pipeline {
                 branch 'test-1'
             }
             steps {
-                echo 'Pushing the artifact to Nexus'
-                docker.withRegistry('http://localhost:8081/repository/dockerhosted-repo/', 'nexus') {
+                script {
+                    echo 'Pushing the artifact to Nexus'
+                    docker.withRegistry('http://localhost:8081/repository/dockerhosted-repo/', 'nexus') {
                         app.push("${IMAGE_NAME}:${COMMIT_HASH}")
                     }
+                }
             }
         }   
     }
