@@ -57,7 +57,6 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'PSW', usernameVariable: 'USER')]){
                         sh "echo ${PSW} | docker login -u ${USER} --password-stdin localhost:8082" 
                         sh "docker push localhost:8082/${IMAGE_NAME}:${COMMIT_HASH}"
-                        ｝
                     }
                 }
             }
