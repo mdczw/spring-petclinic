@@ -54,7 +54,7 @@ pipeline {
             steps {
                 script {
                     echo 'Pushing the artifact to Nexus'
-                    docker.withRegistry('http://localhost:8081/repository/dockerhosted-repo/', 'nexus') {
+                    docker.withRegistry('http://localhost:8082/repository/dockerhosted-repo/', 'nexus') {
                         app.push("${IMAGE_NAME}:${COMMIT_HASH}")
                     }
                 }
