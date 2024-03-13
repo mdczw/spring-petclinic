@@ -42,7 +42,7 @@ pipeline {
             steps {
                 script {
                     echo 'Creating an artifact'
-                    docker.build("${IMAGE_NAME}:${COMMIT_HASH}")
+                    docker.build(localhost:8082/"${IMAGE_NAME}:${COMMIT_HASH}")
                 }
             }
         }  
