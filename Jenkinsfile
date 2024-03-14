@@ -86,8 +86,8 @@ pipeline {
                     }
                 }
             }
-        } 
-        stage('Start deploying') {
+        }
+            stage('Start deploying') {
             when {
                 branch 'testik'
             }
@@ -98,6 +98,7 @@ pipeline {
                 echo 'Start deploying'
             }
         }
+    
         
 
 
