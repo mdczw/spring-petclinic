@@ -24,7 +24,7 @@ pipeline {
             steps {
                 script {
                     echo 'Creating an artifact'
-                    docker.build("localhost:8082/${IMAGE_NAME}:${COMMIT_HASH}")
+                    sh 'docker build localhost:8082/${IMAGE_NAME}:${COMMIT_HASH}'
                 }
             }
         }
