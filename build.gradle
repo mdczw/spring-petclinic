@@ -51,26 +51,6 @@ dependencies {
   testImplementation 'org.testcontainers:mysql'
 }
 
-publishing {
-  publications {
-    mavenJava(MavenPublication) {
-      artifact "build/libs/best-spring-petclinic-${version}.jar"
-    }
-  }
-  repositories {
-    maven {
-      def releasesRepoUrl = "http://localhost:8084/repository/maven-releases/"
-      def snapshotsRepoUrl = "http://localhost:8084/repository/maven-snapshots/"
-      allowInsecureProtocol = true
-      url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-      credentials {
-        username = project.findProperty("mavenUser")
-        password = project.findProperty("mavenPassword")
-      }
-    }
-  }
-}
-
 jar {
     enabled = false
 }
@@ -80,10 +60,3 @@ tasks.named('test') {
   useJUnitPlatform()
 }
 
-task openTestResults() {
-  dependsOn 'build'
-  doLast{
-    def reportFile = "${project.buildDir}/reports/tests/test/index.html"
-    java.awt.Desktop.getDesktop().browse(new File(reportFile).toURI())
-  }
-}
