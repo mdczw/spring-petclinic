@@ -27,7 +27,7 @@ pipeline {
             steps {
                 echo 'Start deploying'
                 script{
-                        sh 'gcloud compute ssh -t --zone "us-central1-a" "spring-petclinic-md-instance-2kwc" --project "gd-gcp-internship-devops"'
+                        sh 'ssh mdyczewska@34.27.8.80'
                         sh 'hostname -i'
                     withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'PSW', usernameVariable: 'USER')]){
                         sh 'echo ${PSW} | docker login -u ${USER} --password-stdin http://34.66.189.205:8082'
