@@ -97,8 +97,7 @@ pipeline {
             steps {
                 echo 'Start deploying'
             }
-
-            }
+        }
 
     }
 }
