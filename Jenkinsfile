@@ -64,7 +64,7 @@ pipeline {
 
         stage('Creating MAIN artifact') {
             when {
-                branch 'main'
+                branch 'testik'
             }
             steps {
                 script {
@@ -75,7 +75,7 @@ pipeline {
         }
         stage('Pushing the artifact to Nexus') {
             when {
-                branch 'main'
+                branch 'testik'
             }
             steps {
                 script {
@@ -87,6 +87,18 @@ pipeline {
                 }
             }
         } 
+        stage('Start deploying') {
+            when {
+                branch 'testik'
+            }
+            input {
+                message "Do you want to deploy Spring petclinic app?"
+            }
+            steps {
+                echo 'Start deploying'
+            }
+        }
+        
 
 
     }
