@@ -26,7 +26,7 @@ pipeline {
             steps {
                 echo 'Start deploying'
                 script{
-                    sh 'docker pull localhost:8082/${IMAGE_NAME}-main:${COMMIT_HASH}'
+                    sh 'gcloud compute ssh --zone "us-central1-a" "spring-petclinic-md-instance-260g" --project "gd-gcp-internship-devops"'
                 }
             }
         }     
