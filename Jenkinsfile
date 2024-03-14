@@ -7,6 +7,34 @@ pipeline {
     }
 
     stages {  
+
+        stage('Creating MAIN artifact') {
+            when {
+                branch 'testik'
+            }
+            steps {
+                script {
+                    echo 'Creating an artifact'
+                    sh "docker build -t localhost:8082/${IMAGE_NAME}-main:${COMMIT_HASH} ."
+                }
+            }
+        }
+        stage('Pushing MAIN artifact to Nexus') {
+            when {
+                branch 'testik'
+            }
+            steps {
+                script {
+                    echo 'Pushing the artifact to Nexus'
+                    withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'PSW', usernameVariable: 'USER')]){
+                        sh "echo ${PSW} | docker login -u ${USER} --password-stdin localhost:8082" 
+                        sh "docker push localhost:8082/${IMAGE_NAME}-main:${COMMIT_HASH}"
+                    } 
+                }
+            }
+        } 
+
+        
         stage('Start deploying') {
             when {
                 branch 'testik'
