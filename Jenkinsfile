@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         COMMIT_HASH = GIT_COMMIT.take(7)
-        IMAGE_NAME = "spring-petclinic"
+        IMAGE_NAME = "spring-petclinic-main"
     }
 
     stages {  
@@ -14,12 +14,20 @@ pipeline {
             steps {
                 echo 'Create git tag'
                 sh './gradlew clean build -x test'
-                sh 'git tag'
                 sh './gradlew currentVersion'
-                sh './gradlew release'
-                sh 'git tag'
             }
-        }   
+        } 
+        stage('Creating an artifact') {
+            when {
+                branch 'test-1'
+            }
+            steps {
+                script {
+                    echo 'Creating an artifact'
+                    docker.build("localhost:8082/${IMAGE_NAME}:${COMMIT_HASH}")
+                }
+            }
+        }  
     }
 }
     
