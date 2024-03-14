@@ -31,7 +31,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'PSW', usernameVariable: 'USER')]){
                         sh "echo ${PSW} | docker login -u ${USER} --password-stdin http://34.66.189.205:8082" 
                         sh "docker pull 34.66.189.205:8082/spring-petclinic-main:be15e84"
-                        sh "docker run 34.66.189.205:8082/spring-petclinic-main:be15e84"
+                        sh "docker run -p 80:8080 34.66.189.205:8082/spring-petclinic-main:be15e84"
                     }
                 }
             }
