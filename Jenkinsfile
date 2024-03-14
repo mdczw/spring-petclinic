@@ -27,14 +27,14 @@ pipeline {
             steps {
                 echo 'Start deploying'
                 script{
-                    
+                        sh 'gcloud compute ssh --zone "us-central1-a" "spring-petclinic-md-instance-2kwc" --project "gd-gcp-internship-devops"'
+                        sh 'hostname -i'
                     withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'PSW', usernameVariable: 'USER')]){
-                        sh '''
-                        gcloud compute ssh --zone "us-central1-a" "spring-petclinic-md-instance-2kwc" --project "gd-gcp-internship-devops"
-                        echo ${PSW} | docker login -u ${USER} --password-stdin http://34.66.189.205:8082
-                        docker pull 34.66.189.205:8082/spring-petclinic-main:be15e84
-                        docker run -p 8080:8080 34.66.189.205:8082/spring-petclinic-main:be15e84
-                        '''
+                        sh 'echo ${PSW} | docker login -u ${USER} --password-stdin http://34.66.189.205:8082'
+                        sh 'hostname -i'
+                        sh 'docker pull 34.66.189.205:8082/spring-petclinic-main:be15e84'
+                        sh 'hostname -i'
+                        sh 'docker run -p 8080:8080 34.66.189.205:8082/spring-petclinic-main:be15e84'
                     }
                 }
             }
