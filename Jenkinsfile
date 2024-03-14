@@ -47,7 +47,7 @@ pipeline {
             }
         }  
 
-        stage('Pushing the artifact to Nexus') {
+        stage('Pushing PR artifact to Nexus') {
             when {
                 branch 'PR-*'
             }
@@ -73,7 +73,7 @@ pipeline {
                 }
             }
         }
-        stage('Pushing the artifact to Nexus') {
+        stage('Pushing MAIN artifact to Nexus') {
             when {
                 branch 'testik'
             }
