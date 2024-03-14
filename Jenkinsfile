@@ -26,11 +26,11 @@ pipeline {
                 echo 'Start deploying'
                 script{
                     sh 'docker pull localhost:8082/${IMAGE_NAME}-main:${COMMIT_HASH}'
+                    }
                 }
-            }
-        }
-        
+            }     
 
+        }
     }
 }
     
