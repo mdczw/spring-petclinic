@@ -14,6 +14,7 @@ pipeline {
             steps {
                 echo 'Create git tag'
                 sh './gradlew clean build -x test'
+                sh 'git tag'
                 sh './gradlew currentVersion'
                 sh './gradlew release'
                 sh 'git tag'
