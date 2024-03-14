@@ -3,20 +3,38 @@ pipeline {
     
     environment {
         COMMIT_HASH = GIT_COMMIT.take(7)
-        IMAGE_NAME = "spring-petclinic-main"
+        IMAGE_NAME = "spring-petclinic"
     }
 
     stages {  
-        stage('Create git tag') {
+        stage('Checkstyle') {
             when {
                 branch 'test-1'
             }
             steps {
-                echo 'Create git tag'
-                sh './gradlew clean build -x test'
-                sh './gradlew currentVersion'
+                echo 'Checkstyle stage'
+                sh './gradlew clean checkstyleMain'
             }
         } 
+        stage('Test') {
+            when {
+                branch 'test-1'
+            }
+            steps {
+                echo 'Test stage'
+                sh './gradlew clean test'
+            }
+        }
+        stage('Build') {
+            when {
+                branch 'test-1'
+            }
+            steps {
+                
+                echo 'Build stage'
+                sh './gradlew clean build -x test'
+            }
+        }  
         stage('Creating an artifact') {
             when {
                 branch 'test-1'
@@ -24,10 +42,11 @@ pipeline {
             steps {
                 script {
                     echo 'Creating an artifact'
-                    sh 'docker build -t localhost:8082/${IMAGE_NAME}:${COMMIT_HASH} .'
+                    docker.build("localhost:8082/${IMAGE_NAME}:${COMMIT_HASH}")
                 }
             }
-        }
+        }  
+
         stage('Pushing the artifact to Nexus') {
             when {
                 branch 'test-1'
