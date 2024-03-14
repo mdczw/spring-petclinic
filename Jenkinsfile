@@ -1,5 +1,11 @@
 pipeline {
-    agent { label 'linux'} 
+    agent any
+    
+    environment {
+        COMMIT_HASH = GIT_COMMIT.take(7)
+        IMAGE_NAME = "spring-petclinic"
+    }
+
     stages {  
         stage('Checkstyle') {
             when {
@@ -8,7 +14,6 @@ pipeline {
             steps {
                 echo 'Checkstyle stage'
                 sh './gradlew clean checkstyleMain'
-                archiveArtifacts artifacts: 'build/reports/checkstyle/main.xml'
             }
         } 
         stage('Test') {
@@ -17,7 +22,7 @@ pipeline {
             }
             steps {
                 echo 'Test stage'
-                 sh './gradlew clean test'
+                sh './gradlew clean test'
             }
         }
         stage('Build') {
@@ -25,38 +30,38 @@ pipeline {
                 branch 'PR-*'
             }
             steps {
+                
                 echo 'Build stage'
-                 sh './gradlew clean build -x test'
+                sh './gradlew clean build -x test'
             }
-        }   
-        stage('Push mr to DockerHub') {
+        }  
+        stage('Creating PR artifact') {
             when {
                 branch 'PR-*'
             }
             steps {
                 script {
-                    echo 'Push mr to DockerHub'
-                    app = docker.build("mdczw/mr") 
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_key') {
-                        app.push("${GIT_COMMIT[0..6]}")
-                    }
+                    echo 'Creating an artifact'
+                    sh "docker build -t localhost:8082/${IMAGE_NAME}-PR:${COMMIT_HASH} ."
                 }
             }
-        }    
-        stage('Push main to DockerHub') {
+        }  
+
+        stage('Pushing the artifact to Nexus') {
             when {
-                branch 'main'
+                branch 'PR-*'
             }
             steps {
                 script {
-                    echo 'Push main to DockerHub'
-                    app = docker.build("mdczw/main") 
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_key') {
-                        app.push("${GIT_COMMIT[0..6]}")
+                    echo 'Pushing the artifact to Nexus'
+                    withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'PSW', usernameVariable: 'USER')]){
+                        sh "echo ${PSW} | docker login -u ${USER} --password-stdin localhost:8082" 
+                        sh "docker push localhost:8082/${IMAGE_NAME}-PR:${COMMIT_HASH}"
                     }
                 }
             }
-        }
+        } 
+
     }
 }
     
