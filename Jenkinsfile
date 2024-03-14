@@ -42,7 +42,7 @@ pipeline {
             steps {
                 script {
                     echo 'Creating an artifact'
-                    sh "docker build -t localhost:8082/${IMAGE_NAME}-PR:${COMMIT_HASH} ."
+                    sh "docker build -t localhost:8082/${IMAGE_NAME}-pr:${COMMIT_HASH} ."
                 }
             }
         }  
@@ -56,11 +56,38 @@ pipeline {
                     echo 'Pushing the artifact to Nexus'
                     withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'PSW', usernameVariable: 'USER')]){
                         sh "echo ${PSW} | docker login -u ${USER} --password-stdin localhost:8082" 
-                        sh "docker push localhost:8082/${IMAGE_NAME}-PR:${COMMIT_HASH}"
+                        sh "docker push localhost:8082/${IMAGE_NAME}-pr:${COMMIT_HASH}"
                     }
                 }
             }
         } 
+
+        stage('Creating MAIN artifact') {
+            when {
+                branch 'main'
+            }
+            steps {
+                script {
+                    echo 'Creating an artifact'
+                    sh "docker build -t localhost:8082/${IMAGE_NAME}-main:${COMMIT_HASH} ."
+                }
+            }
+        }
+        stage('Pushing the artifact to Nexus') {
+            when {
+                branch 'main'
+            }
+            steps {
+                script {
+                    echo 'Pushing the artifact to Nexus'
+                    withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'PSW', usernameVariable: 'USER')]){
+                        sh "echo ${PSW} | docker login -u ${USER} --password-stdin localhost:8082" 
+                        sh "docker push localhost:8082/${IMAGE_NAME}-main:${COMMIT_HASH}"
+                    }
+                }
+            }
+        } 
+
 
     }
 }
