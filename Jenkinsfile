@@ -28,8 +28,8 @@ pipeline {
                 script{
                     sh 'gcloud compute ssh --zone "us-central1-a" "spring-petclinic-md-instance-546m" --project "gd-gcp-internship-devops"'
                     withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'PSW', usernameVariable: 'USER')]){
-                        sh "echo ${PSW} | docker login -u ${USER} --password-stdin http://104.197.110.14/:8082" 
-                        sh "docker pull http://104.197.110.14/:8082/${IMAGE_NAME}-main:${COMMIT_HASH}"
+                        sh "echo ${PSW} | docker login -u ${USER} --password-stdin http://34.66.189.205/:8082" 
+                        sh "docker pull http://34.66.189.205/:8082/${IMAGE_NAME}-main:${COMMIT_HASH}"
                     }
                 }
             }
