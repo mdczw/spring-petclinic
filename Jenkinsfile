@@ -7,33 +7,6 @@ pipeline {
     }
 
     stages {  
-
-        stage('Creating MAIN artifact') {
-            when {
-                branch 'testik'
-            }
-            steps {
-                script {
-                    echo 'Creating an artifact'
-                    sh "docker build -t localhost:8082/${IMAGE_NAME}-main:${COMMIT_HASH} ."
-                }
-            }
-        }
-        stage('Pushing MAIN artifact to Nexus') {
-            when {
-                branch 'testik'
-            }
-            steps {
-                script {
-                    echo 'Pushing the artifact to Nexus'
-                    withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'PSW', usernameVariable: 'USER')]){
-                        sh "echo ${PSW} | docker login -u ${USER} --password-stdin localhost:8082" 
-                        sh "docker push localhost:8082/${IMAGE_NAME}-main:${COMMIT_HASH}"
-                    } 
-                }
-            }
-        } 
-
         
         stage('Start deploying') {
             when {
@@ -57,7 +30,7 @@ pipeline {
                     sh 'gcloud compute ssh --zone "us-central1-a" "spring-petclinic-md-instance-2kwc" --project "gd-gcp-internship-devops"'
                     withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'PSW', usernameVariable: 'USER')]){
                         sh "echo ${PSW} | docker login -u ${USER} --password-stdin http://34.66.189.205:8082" 
-                        sh "docker pull spring-petclinic-main:be15e84"
+                        sh "docker pull 34.66.189.205:8082/spring-petclinic-main:be15e84"
                     }
                 }
             }
