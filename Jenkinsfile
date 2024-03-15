@@ -32,7 +32,7 @@ pipeline {
                     }
                         sh 'hostname -i'
                     withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'PSW', usernameVariable: 'USER')]){
-                        sh 'echo ${PSW} | docker login -u ${USER} --password-stdin http://34.66.189.205:8082'
+                        sh 'echo ${PSW} | docker login -u ${USER} --password-stdin http://34.171.68.54:8082'
                         sh 'hostname -i'
                         sh 'docker pull 34.66.189.205:8082/spring-petclinic-main:be15e84'
                         sh 'hostname -i'
