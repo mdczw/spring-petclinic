@@ -1,10 +1,11 @@
+import java.net.InetAddress
+
 pipeline {
     agent any
     
     environment {
         COMMIT_HASH = GIT_COMMIT.take(7)
         IMAGE_NAME = "spring-petclinic"
-        HOST_IP = $(hostname -i)
     }
 
     stages {  
@@ -14,7 +15,7 @@ pipeline {
                 branch 'testik'
             }
             input {
-                message "Do you want to deploy Spring petclinic app? $HOST_IP"
+                message "Do you want to deploy Spring petclinic app? ${jenkinsIpAddress}"
             }
             steps {
                 echo 'Start deploying'
