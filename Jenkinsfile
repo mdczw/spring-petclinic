@@ -1,5 +1,3 @@
-import java.net.InetAddress
-
 pipeline {
     agent any
     
@@ -15,7 +13,7 @@ pipeline {
                 branch 'testik'
             }
             input {
-                message "Do you want to deploy Spring petclinic app? ${jenkinsIpAddress}"
+                message "Do you want to deploy Spring petclinic app?"
             }
             steps {
                 echo 'Start deploying'
