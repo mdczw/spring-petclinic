@@ -29,7 +29,9 @@ pipeline {
                 script{
                     withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'PSW', usernameVariable: 'USER')]){    
                         sh 'gcloud compute ssh --zone "us-central1-c" "spring-petclinic-md-instance-m75t" \
-                            --project "gd-gcp-internship-devops" --command="hostname -i | echo ${PSW} | docker login -u ${USER} --password-stdin 35.209.98.132:8082" '
+                            --project "gd-gcp-internship-devops" --command="hostname -i | echo ${PSW} | docker login -u ${USER} \
+                            --password-stdin 35.209.98.132:8082" '
+                    }
                     sh 'hostname -i'
                     withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'PSW', usernameVariable: 'USER')]){    
                         sh 'echo ${PSW} | docker login -u ${USER} --password-stdin 35.209.98.132:8082'
